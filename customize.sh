@@ -1,14 +1,8 @@
 #!/system/bin/sh
-MODDIR=${0%/*}
 
-while [ -z "$(getprop sys.boot_completed)" ]; do
-    sleep 20
-done
-chmod 0755 "$MODDIR/kaminari_watchdog.sh"
-chmod 0755 "$MODDIR/battery_honey_on.sh"
-chmod 0755 "$MODDIR/battery_honey_off.sh"
+RAM_TOTAL_KB=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+RAM_TOTAL_GB=$(( (RAM_TOTAL_KB + 1048576 - 1) / 1048576 ))
 
-sh $MODDIR/kaminari_watchdog.sh &
 get_cpu_name() {
   local codename=$(getprop ro.mediatek.platform)
   [ -z "$codename" ] && codename=$(getprop ro.board.platform)
@@ -89,5 +83,39 @@ get_cpu_name() {
   echo "$cpu_name"
 }
 
-DEVICE_NAME=$(get_cpu_name)
-su -lp 2000 -c "cmd notification post -S bigtext -t 'Battery Honey🔋' Tag 'Activated💦 at $DEVICE_NAME'" >/dev/null &
+# Header Biar keren
+ui_print "==============================================="
+ui_print "🔋 Installing Battery Honey 🔋"
+ui_print " "
+ui_print "DEVICE       : $(getprop ro.build.product)"
+ui_print "MODEL        : $(getprop ro.product.model)"
+ui_print "MANUFACTURER : $(getprop ro.product.system.manufacturer)"
+ui_print "BOARD        : $(getprop ro.product.board)"
+ui_print "CPU          : $(get_cpu_name)"
+ui_print "ANDROID VER  : $(getprop ro.build.version.release)"
+ui_print "KERNEL       : $(uname -r)"
+ui_print "🧠 RAM       : ${RAM_TOTAL_GB} GB"
+ui_print " "
+
+# Naughty Splash Muehehe
+sleep 1.2
+case "$((RANDOM % 12 + 1))" in
+  1)  ui_print "- Ready to fuck your battery drain goodbye! 🔋💦" ;;
+  2)  ui_print "- This module’s so sticky, your uptime will beg for release. 🍯😈" ;;
+  3)  ui_print "- Battery lasting longer than your ex ever did. 💀💋" ;;
+  4)  ui_print "- Drip less. Last longer. Just like you wish. 😏🔋" ;;
+  5)  ui_print "- G99? More like G-Spot… we're stroking performance right. 💦" ;;
+  6)  ui_print "- Touch your screen. Feel the climax of efficiency. 😈🔥" ;;
+  7)  ui_print "- From screen-on to screen-off… every second's a tease. 🍑" ;;
+  8)  ui_print "- Honey sweet, system tight – that's how we fuck lag. 💋🔧" ;;
+  9)  ui_print "- Cum control meets current control. Stay charged, daddy. ⚡😏" ;;
+  10) ui_print "- It’s not just power saving… it’s power *seduction*. 😘🔋" ;;
+  11) ui_print "- She said go longer. Battery Honey said say no more. 💦📱" ;;
+  12) ui_print "- Thermal’s tamed, power’s chained. Time to dominate uptime. 🔥😈" ;;
+esac
+
+# Footer
+ui_print " "
+ui_print "==============================================="
+ui_print "✅ Battery Honey installed – now go play long & hard, baby🔋"
+ui_print "==============================================="
