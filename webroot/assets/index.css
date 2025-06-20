@@ -1,0 +1,47 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: url("background.png") no-repeat center center fixed;
+    background-size: cover;
+    background-color: rgba(255, 255, 255, 0.3); /* putih transparan */
+    backdrop-filter: blur(4px);
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* putih semi-transparan */
+    padding: 30px;
+    margin: 5vh auto;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.log-section {
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.log-box {
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    padding: 15px;
+    height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    white-space: pre-wrap;
+    border-radius: 10px;
+}

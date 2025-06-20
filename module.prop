@@ -1,6 +1,6 @@
 id=BatteryHoney
 name=Battery Honey 🔋
-version=4.0
+version=5.0
 versionCode=4
 author=kaminarich
-description=Saves your Battery 🔋 by set CPU's Frequencies to lowest when screen OFF and Fallback when screen ON
+description=Saves your Battery 🔋 by set CPU's Frequencies to lowest when screen OFF - Manage Reclaim Memory via Sebastian 

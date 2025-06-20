@@ -1,102 +1,37 @@
 #!/system/bin/sh
 
 RAM_TOTAL_KB=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+RAM_FREE_KB=$(awk '/MemAvailable/ {print $2}' /proc/meminfo)
 RAM_TOTAL_GB=$(( (RAM_TOTAL_KB + 1048576 - 1) / 1048576 ))
+RAM_FREE_GB=$(( (RAM_FREE_KB + 1048576 - 1) / 1048576 ))
 
-get_cpu_name() {
+get_cpu_codename() {
   local codename=$(getprop ro.mediatek.platform)
   [ -z "$codename" ] && codename=$(getprop ro.board.platform)
   [ -z "$codename" ] && codename=$(grep -m1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^[ \t]*//')
-  [ -z "$codename" ] && codename="unknown"
-
-  local cpu_name="Unknown CPU"
-  case "$codename" in
-    mt6789) cpu_name="Helio G99 | G100 | Ultimate" ;;
-    mt6785) cpu_name="Helio P90" ;;
-    mt6893) cpu_name="Dimensity 1200" ;;
-    mt6895) cpu_name="Dimensity 1300" ;;
-    mt6769) cpu_name="Helio G88" ;;
-    mt6769t) cpu_name="Helio G96" ;;
-    mt6833) cpu_name="Dimensity 700" ;;
-    mt6853) cpu_name="Dimensity 920" ;;
-     # MediaTek Helio Series
-    mt6761) cpu_name="Helio A22" ;;
-    mt6762) cpu_name="Helio P22" ;;
-    mt6763) cpu_name="Helio P23" ;;
-    mt6765) cpu_name="Helio P35" ;;
-    mt6767) cpu_name="Helio P35" ;; # juga sama codename
-    mt6768) cpu_name="Helio P65" ;;
-    mt6771) cpu_name="Helio P60" ;;
-    mt6779) cpu_name="Helio P70" ;;
-    mt6785) cpu_name="Helio P90" ;;
-    mt6795) cpu_name="Helio X20" ;;
-    mt6797) cpu_name="Helio X25" ;;
-    mt6799) cpu_name="Helio X30" ;;
-    mt6769) cpu_name="Helio G88" ;;
-    mt6769t) cpu_name="Helio G96" ;;
-    mt6762g) cpu_name="Helio G81" ;;
-    mt6775) cpu_name="Helio X23" ;;
-    mt6779t) cpu_name="Helio P70 (T variant)" ;;
-    
-    # MediaTek Dimensity Series
-    mt6833) cpu_name="Dimensity 700" ;;
-    mt6853) cpu_name="Dimensity 920" ;;
-    mt6855) cpu_name="Dimensity 900" ;;
-    mt6863) cpu_name="Dimensity 6100" ;;
-    mt6865) cpu_name="Dimensity 6100+" ;;
-    mt6873) cpu_name="Dimensity 6050" ;;
-    mt6877) cpu_name="Dimensity 9200" ;;
-    mt6885) cpu_name="Dimensity 1300" ;;
-    mt6889) cpu_name="Dimensity 8100" ;;
-    mt6891) cpu_name="Dimensity 1100" ;;
-    mt6893) cpu_name="Dimensity 1200" ;;
-    mt6895) cpu_name="Dimensity 1300" ;;
-    mt6896) cpu_name="Dimensity 8050" ;;
-    mt6983) cpu_name="Dimensity 9200+" ;;
-    mt6985) cpu_name="Dimensity 9200+" ;; # variant
-    mt6987) cpu_name="Dimensity 6100+" ;; # variant
-    
-    # Legacy / Others
-    mt6735) cpu_name="Helio P10" ;;
-    mt6737) cpu_name="Helio A20" ;;
-    mt6739) cpu_name="Helio A22 (Alternate)" ;;
-    mt6750) cpu_name="Helio P10" ;;
-    mt6755) cpu_name="Helio P10" ;;
-    mt6757) cpu_name="Helio P20" ;;
-    mt6758) cpu_name="Helio P20" ;;
-    mt6761) cpu_name="Helio A22" ;;
-    mt6797m) cpu_name="Helio X23" ;;
-    mt6799m) cpu_name="Helio X30" ;;
-
-    # Variants / Device-specific codename (common on phones)
-    mt6763t) cpu_name="Helio P23 (T variant)" ;;
-    mt6765t) cpu_name="Helio P35 (T variant)" ;;
-    mt6768t) cpu_name="Helio P65 (T variant)" ;;
-
-    # Others fallback
-    mt8127) cpu_name="MT8127 (Legacy Tablet SoC)" ;;
-    mt8163) cpu_name="MT8163 (Tablet SoC)" ;;
-    mt8173) cpu_name="MT8173 (Tablet SoC)" ;;
-    mt8516) cpu_name="MT8516 (Audio SoC)" ;;
-    *) cpu_name="$codename (Gacor Ultimate)" ;;
-  esac
-  echo "$cpu_name"
+  echo "${codename:-unknown}"
 }
-
-# Header Biar keren
-ui_print "==============================================="
-ui_print "🔋 Installing Battery Honey 🔋"
+ui_print "=========================================="
+ui_print "   ___       __  __              "
+ui_print "  / _ )___ _/ /_/ /____ ______ __"
+ui_print " / _  / _ \`/ __/ __/ -_) __/ // /"
+ui_print "/____/\\_,_/\\__/\\__/\\__/_/  \\_, / "
+ui_print "  / // /__  ___  ___ __ __/___/  "
+ui_print " / _  / _ \\/ _ \\/ -_) // /        "
+ui_print "/_//_/\\___/_//_/\\__/\\_, /         "
+ui_print "                   /___/         "
+ui_print " "
+ui_print "=========================================="
 ui_print " "
 ui_print "DEVICE       : $(getprop ro.build.product)"
 ui_print "MODEL        : $(getprop ro.product.model)"
 ui_print "MANUFACTURER : $(getprop ro.product.system.manufacturer)"
 ui_print "BOARD        : $(getprop ro.product.board)"
-ui_print "CPU          : $(get_cpu_name)"
+ui_print "CODENAME     : $(get_cpu_codename)"
 ui_print "ANDROID VER  : $(getprop ro.build.version.release)"
 ui_print "KERNEL       : $(uname -r)"
-ui_print "🧠 RAM       : ${RAM_TOTAL_GB} GB"
+ui_print "🧠 RAM       : ${RAM_TOTAL_GB} GB total / ${RAM_FREE_GB} GB free"
 ui_print " "
-
 # Naughty Splash Muehehe
 sleep 1.2
 case "$((RANDOM % 12 + 1))" in
@@ -116,6 +51,6 @@ esac
 
 # Footer
 ui_print " "
-ui_print "==============================================="
+ui_print "=========================================="
 ui_print "✅ Battery Honey installed – now go play long & hard, baby🔋"
-ui_print "==============================================="
+ui_print "=========================================="
