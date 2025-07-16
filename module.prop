@@ -1,6 +1,7 @@
 id=BatteryHoney
 name=Battery Honey 🔋
-version=5.0
-versionCode=4
+version=5.6
+versionCode=56
 author=kaminarich
-description=Saves your Battery 🔋 by set CPU's Frequencies to lowest when screen OFF - Manage Reclaim Memory via Sebastian 
+description=Saves your Battery - Manage Reclaim Memory via Sebastian
+banner=https://raw.githubusercontent.com/kaminarich/BatteryHoney/refs/heads/sebastian-ramreclaimer/Untitled3_20250705160042-min.png

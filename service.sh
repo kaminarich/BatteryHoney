@@ -1,27 +1,31 @@
 #!/system/bin/sh
-MODDIR=${0%/*}
-clear="/data/local/tmp/ram-reclaim.log"
-#===== Utility =====
-eval_b64() {
-    [ -f "$1" ] && eval "$(base64 -d "$1")" &
-}
 
+# ====== Wait Boot ======
 while [ -z "$(getprop sys.boot_completed)" ]; do
-chmod 0755 "$MODDIR/sebastian.sh"
-chmod 0755 "$MODDIR/monitor.sh"
-chmod 0755 "$MODDIR/battery_honey_on.sh"
-chmod 0755 "$MODDIR/battery_honey_off.sh"
-rm -rf "$clear" >/dev/null &
-    sleep 10
+    sleep 5
 done
-sh "$MODDIR/monitor.sh" &
+
+BATTERYHONEY_DIR="/data/adb/modules/BatteryHoney"
+BATTERYHONEY_PROP="$BATTERYHONEY_DIR/module.prop"
+CHECK_SCRIPT="$BATTERYHONEY_DIR/check.sh"
+
+while [ ! -f "$BATTERYHONEY_PROP" ]; do
+    sleep 2
+done
+
+chmod +x "$CHECK_SCRIPT"
+chmod +x "$BATTERYHONEY_DIR/system/bin/sebastian2"
+chmod +x "$BATTERYHONEY_DIR/system/bin/inotifywait"
+/system/bin/sh "$CHECK_SCRIPT"
 
 get_cpu_name() {
-  local codename=$(getprop ro.mediatek.platform)
-  [ -z "$codename" ] && codename=$(getprop ro.board.platform)
-  [ -z "$codename" ] && codename=$(grep -m1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^[ \t]*//')
-  echo "${codename:-unknown}"
+    local codename=$(getprop ro.mediatek.platform)
+    [ -z "$codename" ] && codename=$(getprop ro.board.platform)
+    [ -z "$codename" ] && codename=$(grep -m1 'Hardware' /proc/cpuinfo | cut -d ':' -f2 | sed 's/^[ \t]*//')
+    echo "${codename:-unknown}"
 }
 
 DEVICE_NAME=$(get_cpu_name)
 su -lp 2000 -c "cmd notification post -S bigtext -t 'Battery Honey🔋' bh_tag 'Activated at $DEVICE_NAME'" >/dev/null &
+
+nohup "$BATTERYHONEY_DIR/system/bin/sebastian2" >/dev/null 2>&1 &

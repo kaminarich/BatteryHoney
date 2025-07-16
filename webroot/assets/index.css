@@ -4,44 +4,83 @@ body {
     font-family: sans-serif;
     background: url("background.png") no-repeat center center fixed;
     background-size: cover;
-    background-color: rgba(255, 255, 255, 0.3); /* putih transparan */
-    backdrop-filter: blur(4px);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 
 .container {
-    background-color: rgba(255, 255, 255, 0.8); /* putih semi-transparan */
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    width: 100vw;        
+    height: 100vh;     
     padding: 30px;
-    margin: 5vh auto;
-    width: 90%;
-    max-width: 800px;
-    border-radius: 20px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    position: absolute;  
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+h1, h2 {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    color: #00ffcc;
 }
 
 h1 {
-    text-align: center;
     font-size: 2.5em;
     margin-bottom: 30px;
-    color: #333;
+    text-shadow: 0 0 5px #00ffaa;
+}
+
+h2 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
 }
 
 .log-section {
     margin-bottom: 40px;
 }
 
-h2 {
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    color: #444;
-}
-
 .log-box {
-    background-color: #f9f9f9;
-    border: 2px solid #ccc;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid #00ff99aa;
     padding: 15px;
     height: 200px;
     overflow-y: auto;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95em;
     white-space: pre-wrap;
     border-radius: 10px;
+    color: #00ff00;
+    text-shadow: 0 0 3px #00ff00;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 2;
+}
+
+.log-box::after {
+    content: '_';
+    animation: blink 1s infinite;
+    display: inline-block;
+    margin-left: 5px;
+    opacity: 1;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+#matrixCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10;
+    pointer-events: none;
 }
