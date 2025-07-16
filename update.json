@@ -1,6 +1,6 @@
 {
-  "version": 5.6,
-  "versionCode": 56,
-  "zipUrl": "https://github.com/kaminarich/BatteryHoney/releases/download/V5.6/Battery.Honey.5.6.zip",
-  "changelog": "add banner - early boost - inotifywait"
+    "version": 5.6,
+    "versionCode": 56,
+    "zipUrl": "https://github.com/kaminarich/BatteryHoney/releases/download/V5.6/Battery.Honey.5.6.zip",
+    "changelog": "https://raw.githubusercontent.com/kaminarich/BatteryHoney/sebastian-ramreclaimer/changelog.md"
 }
