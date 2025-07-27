@@ -1,4 +1,3 @@
-- add module banner for KSUN 
-- enable early boost
-- update.json
-- used inotifywait 
+- add Cooling Engine
+  ---- cooling engine will start when screen off
+  ---- cooling engine will stop when screen on
