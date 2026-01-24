@@ -1,7 +1,7 @@
-id=BatteryHoney
-name=Battery Honey 🔋
-version=5.6
-versionCode=56
+id=batteryhoney
+name=Battery Honey
+version=7.1—Awaken
+versionCode=70
 author=kaminarich
-description=Saves your Battery - Manage Reclaim Memory via Sebastian
-banner=https://raw.githubusercontent.com/kaminarich/BatteryHoney/refs/heads/sebastian-ramreclaimer/Untitled3_20250705160042-min.png
+description=A Battery and Power Optimizer
+banner=https://raw.githubusercontent.com/kaminarich/banner/refs/heads/main/banner.webp
