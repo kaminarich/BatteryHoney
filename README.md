@@ -1,2 +1,2 @@
 # BatteryHoney
-A Magisk module to Optimize Battery Saving when screen OFF
+A Magisk module to Optimize Battery Saving without interrupting Performance 
