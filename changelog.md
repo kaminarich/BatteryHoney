@@ -1,3 +1,4 @@
-- add Cooling Engine
-  cooling engine will start when screen off
-  cooling engine will stop when screen on
+• Migrate from Rust binary to Zig binary for more light, fast, resources friendly and native process
+• Adapt RaiRin-AI Battery Logic
+• Devfreq & GPU adjustment
+• Only for Aarch64 Devices
